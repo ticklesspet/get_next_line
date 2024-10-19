@@ -12,11 +12,11 @@ char	*ft_substr(char const *str, unsigned int start, size_t n)
 		n = 0;
 	else if (start + n > str_len - 1)
 		n = str_len - start;
-	substr = (char *)malloc(sizeof(char) * (n + 1));
+	substr = malloc(sizeof(char) * n + 1);
 	if (!substr)
 		return (NULL);
 	ft_memcpy(substr, str + start, n);
-	substr[n] = '\0';
+	substr[n] = 0;
 	return (substr);
 }
 
@@ -37,9 +37,9 @@ char	*free_both(char **buffer, char **current_line)
 
 static char	*ft_extract_line_segment(char **str)
 {
-	int		i;
 	char	*segment;
 	char	*temp;
+	int		i;
 
 	i = 0;
 	if (!str || !*str)
@@ -62,9 +62,9 @@ static char	*ft_extract_line_segment(char **str)
 
 char	*get_next_line(int fd)
 {
-	int			read_size;
 	char		*buffer;
 	static char	*current_line;
+	int			read_size;
 
 	if (fd == -1 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -76,7 +76,7 @@ char	*get_next_line(int fd)
 		return (free_both(&buffer, &current_line));
 	while (read_size > 0)
 	{
-		buffer[read_size] = '\0';
+		buffer[read_size] = 0;
 		if (!current_line)
 			current_line = ft_strdup(buffer);
 		else
