@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abadun <abadun@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 21:31:06 by abadun            #+#    #+#             */
-/*   Updated: 2024/10/19 21:31:08 by abadun           ###   ########.fr       */
+/*   Updated: 2024/10/19 22:04:59 by abadun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_substr(char const *str, unsigned int start, size_t n)
 {
@@ -74,30 +74,30 @@ static char	*ft_extract_line_segment(char **str)
 
 char	*get_next_line(int fd)
 {
-	char		*buffer;
+	char		*buffer[OPEN_MAX];
 	static char	*current_line;
 	int			read_size;
 
 	if (fd == -1 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buffer)
+	buffer[fd] = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buffer[fd])
 		return (NULL);
-	read_size = read(fd, buffer, BUFFER_SIZE);
+	read_size = read(fd, buffer[fd], BUFFER_SIZE);
 	if (read_size < 0)
-		return (free_both(&buffer, &current_line));
+		return (free_both(&buffer[fd], &current_line));
 	while (read_size > 0)
-	{
-		buffer[read_size] = 0;
+	{W
+		buffer[fd][read_size] = 0;
 		if (!current_line)
-			current_line = ft_strdup(buffer);
+			current_line = ft_strdup(buffer[fd]);
 		else
-			current_line = ft_strjoin(current_line, buffer);
+			current_line = ft_strjoin(current_line, buffer[fd]);
 		if (ft_strchr(current_line, '\n'))
 			break ;
-		read_size = read(fd, buffer, BUFFER_SIZE);
+		read_size = read(fd, buffer[fd], BUFFER_SIZE);
 	}
-	return (ft_free(&buffer), ft_extract_line_segment(&current_line));
+	return (ft_free(&buffer[fd]), ft_extract_line_segment(&current_line));
 }
 
 // #include <stdio.h>
@@ -105,8 +105,11 @@ char	*get_next_line(int fd)
 // int	main(void)
 // {
 // 	int fd;
+// 	int fd2;
+// 	char *result;
 // 	fd = open("test", O_RDONLY);
-// 	char *result = get_next_line(fd);
+// 	fd2 = open("test2", O_RDONLY);
+// 	result = get_next_line(fd2);
 // 	printf(">>> GET NEXT LINE: %s\n", result);
 // 	free (result);
 // 	result = get_next_line(fd);
