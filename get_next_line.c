@@ -6,12 +6,13 @@
 /*   By: abadun <abadun@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 21:31:06 by abadun            #+#    #+#             */
-/*   Updated: 2024/10/19 21:31:08 by abadun           ###   ########.fr       */
+/*   Updated: 2024/10/20 18:21:26 by abadun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+// extracts substring from string
 char	*ft_substr(char const *str, unsigned int start, size_t n)
 {
 	char	*substr;
@@ -28,10 +29,11 @@ char	*ft_substr(char const *str, unsigned int start, size_t n)
 	if (!substr)
 		return (NULL);
 	ft_memcpy(substr, str + start, n);
-	substr[n] = 0;
+	substr[n] = '\0';
 	return (substr);
 }
 
+// free memory 
 void	ft_free(char **str)
 {
 	if (!str || !*str)
@@ -40,6 +42,7 @@ void	ft_free(char **str)
 	*str = NULL;
 }
 
+// frees buffer and the current line (when read_size < 0)
 char	*free_both(char **buffer, char **current_line)
 {
 	ft_free(buffer);
@@ -47,31 +50,33 @@ char	*free_both(char **buffer, char **current_line)
 	return (NULL);
 }
 
-static char	*ft_extract_line_segment(char **str)
+// this function extracts the part of the line before the nl character
+// e.g. "111111111111111111 \n aaaaaaaaaaa" -> "111111111111111111\n"
+char	*ft_extract_new_line(char **str)
 {
-	char	*segment;
-	char	*temp;
+	char	*part_before_nl;
+	char	*new_str;
 	int		i;
 
 	i = 0;
-	if (!str || !*str)
+	if (str == NULL || *str == NULL)
 		return (NULL);
-	while ((*str)[i] != '\n' && (*str)[i] != '\0')
+	while ((*str)[i] != '\0' && (*str)[i] != '\n')
 		i++;
-	segment = ft_substr(*str, 0, i + 1);
-	temp = ft_strdup(*str);
+	part_before_nl = ft_substr(*str, 0, i + 1);
+	new_str = ft_substr(*str, i + 1, ft_strlen(*str));
 	ft_free(str);
-	*str = ft_substr(temp, i + 1, ft_strlen(temp));
-	ft_free(&temp);
-	if (!ft_strchr(segment, '\n'))
+	*str = new_str; 
+	if (!ft_strchr(part_before_nl, '\n')) 
 	{
-		if (!ft_strlen(segment))
-			ft_free(&segment);
+		if (ft_strlen(part_before_nl) == 0)
+			ft_free(&part_before_nl);
 		ft_free(str);
 	}
-	return (segment);
+	return (part_before_nl);
 }
 
+// main GNL logic function
 char	*get_next_line(int fd)
 {
 	char		*buffer;
@@ -88,7 +93,7 @@ char	*get_next_line(int fd)
 		return (free_both(&buffer, &current_line));
 	while (read_size > 0)
 	{
-		buffer[read_size] = 0;
+		buffer[read_size] = '\0';
 		if (!current_line)
 			current_line = ft_strdup(buffer);
 		else
@@ -97,7 +102,7 @@ char	*get_next_line(int fd)
 			break ;
 		read_size = read(fd, buffer, BUFFER_SIZE);
 	}
-	return (ft_free(&buffer), ft_extract_line_segment(&current_line));
+	return (ft_free(&buffer), ft_extract_new_line(&current_line));
 }
 
 // #include <stdio.h>

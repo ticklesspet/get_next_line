@@ -6,7 +6,7 @@
 /*   By: abadun <abadun@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 21:31:13 by abadun            #+#    #+#             */
-/*   Updated: 2024/10/19 21:33:48 by abadun           ###   ########.fr       */
+/*   Updated: 2024/10/20 17:46:29 by abadun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #  define BUFFER_SIZE 42
 # endif
 
-// includes
+// headers
 # include <unistd.h>
 # include <stdlib.h>
 # include <stddef.h>

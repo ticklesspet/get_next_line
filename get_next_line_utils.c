@@ -6,12 +6,13 @@
 /*   By: abadun <abadun@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 21:30:53 by abadun            #+#    #+#             */
-/*   Updated: 2024/10/19 21:31:41 by abadun           ###   ########.fr       */
+/*   Updated: 2024/10/20 18:22:58 by abadun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+// string len
 size_t	ft_strlen(const char *str)
 {
 	size_t	len;
@@ -22,6 +23,7 @@ size_t	ft_strlen(const char *str)
 	return (len);
 }
 
+// search for a character inside a string, return pointer with its 1st occurence
 char	*ft_strchr(const char *str, int c)
 {
 	while (*str)
@@ -35,6 +37,7 @@ char	*ft_strchr(const char *str, int c)
 	return (NULL);
 }
 
+// join strings (concatenate), return the joined string
 char	*ft_strjoin(char *str1, char *str2)
 {
 	char	*concat_str;
@@ -56,6 +59,7 @@ char	*ft_strjoin(char *str1, char *str2)
 	return (concat_str);
 }
 
+// duplicate string, return the duplicate
 char	*ft_strdup(const char *str)
 {
 	char	*duplicated_str;
@@ -71,6 +75,7 @@ char	*ft_strdup(const char *str)
 	return (duplicated_str);
 }
 
+// copy memory block
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	size_t	i;
